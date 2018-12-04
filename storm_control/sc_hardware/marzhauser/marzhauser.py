@@ -81,7 +81,7 @@ class MarzhauserRS232(RS232.RS232):
 if (__name__ == "__main__"):
     import time
 
-    stage = MarzhauserRS232(port = "COM5", baudrate = 57600)
+    stage = MarzhauserRS232(port = "COM3", baudrate = 57600)
     
     def comm(cmd, timeout):
         cmd()
