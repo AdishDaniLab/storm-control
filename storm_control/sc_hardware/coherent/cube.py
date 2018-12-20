@@ -24,7 +24,7 @@ class Cube(RS232.RS232):
         self.on = False
         self.pmin = 0.0
         self.pmax = 5.0
-        
+
         try:
             # open port
             super().__init__(**kwds)
@@ -139,7 +139,7 @@ class Cube(RS232.RS232):
 # Testing
 #
 if (__name__ == "__main__"):
-    cube = Cube(port = "COM10")
+    cube = Cube(port = "COM14")
     if cube.getStatus():
         print(cube.getPowerRange())
         print(cube.getLaserOnOff())
