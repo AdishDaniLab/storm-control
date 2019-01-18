@@ -296,13 +296,13 @@
 
          <ch1>
 	  <gui_name type="string">647</gui_name>
-	  <color type="string">255,255,0</color>
+	  <color type="string">255,0,0</color>
 	  <amplitude_modulation>
 	    <hw_fn_name>ctech_aotf.ch647</hw_fn_name>
 	  </amplitude_modulation>
       <analog_modulation>
 	    <hw_fn_name type="string">daq.ilm647.ao_task</hw_fn_name>
-	    <max_voltage type="float">6.0</max_voltage>
+	    <max_voltage type="float">1.0</max_voltage>
 	    <min_voltage type="float">0.0</min_voltage>
 	  </analog_modulation>      
     <mechanical_shutter>
@@ -312,7 +312,7 @@
 
          <ch2>
 	  <gui_name type="string">561</gui_name>
-	  <color type="string">255,255,0</color>
+	  <color type="string">198,255,0</color>
 	  <amplitude_modulation>
 	    <hw_fn_name>ctech_aotf.ch561</hw_fn_name>
 	  </amplitude_modulation>
@@ -329,13 +329,13 @@
 
          <ch3>
 	  <gui_name type="string">488</gui_name>
-	  <color type="string">0,0,255</color>
+	  <color type="string">0,247,255</color>
 	  <amplitude_modulation>
 	    <hw_fn_name>ctech_aotf.ch488</hw_fn_name>
 	  </amplitude_modulation>
        <analog_modulation>
 	    <hw_fn_name type="string">daq.ilm488.ao_task</hw_fn_name>
-	    <max_voltage type="float">6.0</max_voltage>
+	    <max_voltage type="float">1.0</max_voltage>
 	    <min_voltage type="float">0.0</min_voltage>
 	    </analog_modulation>      
     <mechanical_shutter>
@@ -345,13 +345,13 @@
 
     <ch4>
 	  <gui_name type="string">460</gui_name>
-	  <color type="string">255,0,255</color>
+	  <color type="string">0,123,255</color>
 	  <amplitude_modulation>
 	    <hw_fn_name>ctech_aotf.ch460</hw_fn_name>
 	  </amplitude_modulation>
        <analog_modulation>
 	    <hw_fn_name type="string">daq.ilm460.ao_task</hw_fn_name>
-	    <max_voltage type="float">6.0</max_voltage>
+	    <max_voltage type="float">1.0</max_voltage>
 	    <min_voltage type="float">0.0</min_voltage>
 	    </analog_modulation>      
     <mechanical_shutter>
