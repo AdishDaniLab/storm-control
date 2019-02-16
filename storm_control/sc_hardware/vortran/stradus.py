@@ -8,15 +8,15 @@ import traceback
 
 import storm_control.sc_hardware.serial.RS232 as RS232
 
-class Cube(RS232.RS232):
+class Stradus(RS232.RS232):
     """
-    This class controls a Coherent cube laser using RS-232 communication.
+    This class controls a Vortran Stradus laser using RS-232 communication.
     """
     def __init__(self, **kwds):
         """
         Connect to the laser by RS-232 and verify that the connection has been made.
         """
-        # Add Cube RS232 default settings.
+        # Add Stradus RS232 default settings.
         kwds["baudrate"] = 19200
         kwds["end_of_line"] = "\r"
         kwds["wait_time"] = 0.05
@@ -36,7 +36,7 @@ class Cube(RS232.RS232):
         except Exception:
             print(traceback.format_exc())
             self.live = False
-            print("Failed to connect to Cube Laser at port", kwds["port"])
+            print("Failed to connect to Stradus Laser at port", kwds["port"])
             print("Perhaps it is turned off or the COM ports have")
             print("been scrambled?")
             
@@ -57,8 +57,7 @@ class Cube(RS232.RS232):
         """
         Checks if the laser is configured for external control.
         """
-        self.sendCommand("?EXT")
-        print("?EXT")
+        self.sendCommand("?EPC")
         response = self.waitResponse()
         if (response.find("=1") == -1):
             return False
@@ -69,8 +68,7 @@ class Cube(RS232.RS232):
         """
         Checks if the laser is on or off.
         """
-        self.sendCommand("?L")
-        print("?L")
+        self.sendCommand("?LE")
         resp = self.waitResponse()
         if (resp[2] == "1"):
             self.on = True
@@ -83,20 +81,21 @@ class Cube(RS232.RS232):
         """
         Returns the laser power range (in mW?).
         """
-        self.sendCommand("?MINLP")
-        print("?MINLP")
-        pmin = self.respToFloat(self.waitResponse(), 6)
-        self.sendCommand("?MAXLP")
-        print("?MAXLP")
-        pmax = self.respToFloat(self.waitResponse(), 6)
+        #self.sendCommand("?MINLP")
+        #print("?MINLP")
+        #pmin = self.respToFloat(self.waitResponse(), 6)
+        pmin = 0.5
+        self.sendCommand("?MAXP")
+
+        #pmax = self.respToFloat(self.waitResponse(), 6)
+        pmax = 20.0
         return [pmin, pmax]
 
     def getPower(self):
         """
         Return the current laser power (in mW?).
         """
-        self.sendCommand("?SP")
-        print("?SP")
+        self.sendCommand("?LP")
         power_string = self.waitResponse()
         return float(power_string[3:-1])
 
@@ -105,11 +104,9 @@ class Cube(RS232.RS232):
         Set the laser to external control mode.
         """
         if mode:
-            self.sendCommand("EXT=1")
-            print("EXT=1")
+            self.sendCommand("EPC=1")
         else:
-            self.sendCommand("EXT=0")
-            print("EXT=0")
+            self.sendCommand("EPC=0")
         self.waitResponse()
 
     def setLaserOnOff(self, on):
@@ -117,13 +114,11 @@ class Cube(RS232.RS232):
         Turn the laser on or off.
         """
         if on and (not self.on):
-            self.sendCommand("L=1")
-            print("L=1")
+            self.sendCommand("LE=1")
             self.waitResponse()
             self.on = True
         if (not on) and self.on:
-            self.sendCommand("L=0")
-            print("L=0")
+            self.sendCommand("LE=0")
             self.waitResponse()
             self.on = False
 
@@ -133,8 +128,7 @@ class Cube(RS232.RS232):
         """
         if power_in_mw > self.pmax:
             power_in_mw = self.pmax
-        self.sendCommand("P=" + str(power_in_mw))
-        print("P=", str(power_in_mw))
+        self.sendCommand("LP=" + str(power_in_mw))
         self.waitResponse()
 
     def shutDown(self):
@@ -150,11 +144,11 @@ class Cube(RS232.RS232):
 # Testing
 #
 if (__name__ == "__main__"):
-    cube = Cube(port = "COM14")
-    if cube.getStatus():
-        print(cube.getPowerRange())
-        print(cube.getLaserOnOff())
-        cube.shutDown()
+    stradus = Stradus(port = "COM15")
+    if stradus.getStatus():
+        print(stradus.getPowerRange())
+        print(stradus.getLaserOnOff())
+        stradus.shutDown()
 
 #
 # The MIT License

@@ -6,7 +6,7 @@ Hazen 04/17
 """
 
 import storm_control.hal4000.halLib.halMessage as halMessage
-
+import storm_control.sc_hardware.vortran.stradus as stradus
 import storm_control.sc_hardware.baseClasses.amplitudeModule as amplitudeModule
 import storm_control.sc_hardware.baseClasses.hardwareModule as hardwareModule
 
@@ -85,8 +85,7 @@ class VortranStradus(VortranModule):
 
         serial_port = module_params.get("configuration").get("port")
 
-        import storm_control.sc_hardware.Vortran.stradus as stradus
-        self.laser = stradus.stradus(port = serial_port)
+        self.laser = stradus.Stradus(port = serial_port)
 
         if self.laser.getStatus():
             [pmin, pmax] = self.laser.getPowerRange()

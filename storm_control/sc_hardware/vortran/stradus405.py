@@ -2,18 +2,18 @@
 #
 ## @file
 #
-# Coherent CUBE 405 laser control.
+# Vortran stradus 405 laser control.
 #
 # Hazen 7/10 (com port modified Josh 6/26/13)
 #
 
-import cube
+import stradus
 
-## Cube405
+## Stradus405
 #
-# Controls a Coherent Cube 405 laser. This is sub-class of cube.Cube.
+# Controls a Vortran stradus 405 laser. This is sub-class of stradus.Stradus.
 #
-class Cube405(cube.Cube):
+class Stradus405(stradus.Stradus):
 
     ## __init__
     #
@@ -21,19 +21,19 @@ class Cube405(cube.Cube):
     #
     # @param port (Optional) A string that specifies the port, the default is "COM13".
     #
-    def __init__(self, port = "COM14"):
-        cube.Cube.__init__(self, port)
+    def __init__(self, port = "COM15"):
+        stradus.Stradus.__init__(self, port)
 
 #
 # Testing
 #
 
 if __name__ == "__main__":
-    cube = Cube405(port = "COM14")
-    if cube.getStatus():
-        print cube.getPowerRange()
-        print cube.getLaserOnOff()
-        cube.shutDown()
+    stradus = Stradus405(port = "COM15")
+    if stradus.getStatus():
+        print stradus.getPowerRange()
+        print stradus.getLaserOnOff()
+        stradus.shutDown()
 
 #
 # The MIT License

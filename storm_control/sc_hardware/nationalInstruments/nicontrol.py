@@ -38,7 +38,7 @@ class NIDAQTask(PyDAQmx.Task):
     def __init__(self, **kwds):
         with getLock():
             super().__init__(**kwds)
-
+            
     def clearTask(self):
         with getLock():
             super().ClearTask()
@@ -202,7 +202,7 @@ class AnalogWaveformOutput(NIDAQTask):
             sample_mode = PyDAQmx.DAQmx_Val_FiniteSamps
         else:
             sample_mode = PyDAQmx.DAQmx_Val_ContSamps
-        
+
         if rising:
             rising = PyDAQmx.DAQmx_Val_Rising
         else:
@@ -255,10 +255,10 @@ class CounterOutput(NIDAQTask):
         with getLock():
             if (number_samples > 0):
                 self.CfgImplicitTiming(PyDAQmx.DAQmx_Val_FiniteSamps,
-                                       number_samples)
+                                    number_samples)
             else:
                 self.CfgImplicitTiming(PyDAQmx.DAQmx_Val_ContSamps,
-                                       1000)
+                                    1000)
 
     def removeTrigger(self):
         """
@@ -385,7 +385,7 @@ class DigitalWaveformOutput(NIDAQTask):
         assert (waveforms[0].dtype == numpy.uint8)
 
         waveform_len = waveforms[0].size
-
+        
         # Set the timing for the waveform.
         if finite:
             sample_mode = PyDAQmx.DAQmx_Val_FiniteSamps

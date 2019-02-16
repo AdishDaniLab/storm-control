@@ -240,7 +240,7 @@ class NidaqModule(daqModule.DaqModule):
             task = configuration.get(fn_name)
             for task_name in task.getAttrs():
                 task_params = task.get(task_name)
-            
+
                 daq_fn_name = ".".join([self.module_name, fn_name, task_name])
                 if (task_name == "ai_task"):
                     lines = list(map(lambda x: x.strip(), task_params.get("lines").split(",")))
@@ -282,7 +282,7 @@ class NidaqModule(daqModule.DaqModule):
             # Get frames per second from the timing functionality. This is
             # a property of the camera that drives the timing functionality.
             fps = message.getData()["properties"]["functionality"].getFPS()
-            
+
             # Calculate frequency. This is set slightly higher than the camere
             # frequency so that we are ready at the start of the next frame.
             frequency = 1.01 * fps * float(self.oversampling)
