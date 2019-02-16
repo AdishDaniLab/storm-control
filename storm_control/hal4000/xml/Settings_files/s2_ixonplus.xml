@@ -14,7 +14,7 @@
     <emccd_gain type="int">1</emccd_gain>
     <emgainmode type="int">0</emgainmode>
     
-    <exposure_time type="float">0.04825</exposure_time>
+    <exposure_time type="float">0.05</exposure_time>
     
     <extension type="string"/>
     <external_trigger type="boolean">False</external_trigger>
@@ -25,7 +25,7 @@
         -->
     <frame_transfer_mode type="int">1</frame_transfer_mode>
     <head_model type="string">DU897_BV</head_model>
-    <hsspeed type="float">17.0</hsspeed>
+    <hsspeed type="float">10.0</hsspeed>
     <isolated_cropmode type="boolean">False</isolated_cropmode>
     <kinetic_cycle_time type="float">0.0</kinetic_cycle_time>
     <low_during_filming type="boolean">False</low_during_filming>
