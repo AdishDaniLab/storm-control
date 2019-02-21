@@ -35,7 +35,7 @@ class powerMeter(RS232.RS232):
         try:
             return self.commWithResp("*IDN?")
         except:
-            print "powerMeter.id failed"
+            print("powerMeter.id failed")
             return 0.0
 
     ## power
@@ -48,7 +48,7 @@ class powerMeter(RS232.RS232):
             return self.waitResponse()[:-2]
 #            return float(self.commWithResp(":POWER?"))
         except:
-            print "powerMeter.power failed"
+            print("powerMeter.power failed")
             return 0.0
 
     ## wavelength
@@ -61,7 +61,7 @@ class powerMeter(RS232.RS232):
             return self.waitResponse()[:-2]
 #            return float(self.commWithResp(":WAVELENGTH?"))
         except:
-            print "powerMeter.wavelength failed"
+            print("powerMeter.wavelength failed")
             return 0.0
 
 
@@ -72,17 +72,17 @@ class powerMeter(RS232.RS232):
 if __name__ == "__main__":
     pm100 = powerMeter()
     if 1:
-        print pm100.id()
-        print pm100.wavelength()
+        print (pm100.id())
+        print (pm100.wavelength())
         for i in range(5):
-            print pm100.power()
+            print (pm100.power())
 
     if 0:
         import time
         fp = open("powerlog.txt", "w")
         for i in range(20*60):
             power = pm100.power()
-            print i, power
+            print (i, power)
             fp.write(str(i) + " " + str(power) + "\n")
             time.sleep(1)
         fp.close()
