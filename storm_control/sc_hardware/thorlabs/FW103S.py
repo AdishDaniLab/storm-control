@@ -6,30 +6,34 @@ Gayatri 4/19
 """
 import traceback
 import storm_control.sc_hardware.baseClasses.illuminationHardware as illuminationHardware
-from PyAPT.PyAPT import APTMotor
+from storm_control.sc_hardware.thorlabs.PyAPT.PyAPT import APTMotor
 import time
+
 
 class FW103S():
     """
     Encapsulates communication with a Thorlabs filter wheel through the APT dll.
     """
-    def __init__(self, **kwds):
+
+    def __init__(self, serialno):
         super().__init__()
         # Initializing motors
+
         print("fw103s : Initializing motors...")
         try:
-            self.Motor = APTMotor(80831436, HWTYPE=29)
+            print("self.Motor = APTMotor(80831436, HWTYPE=29)")
             # self.Motor2 = APTMotor(80831430, HWTYPE=29)
             # self.Motor3 = APTMotor(80831429, HWTYPE=29)
             # self.Motor4 = APTMotor(80828888, HWTYPE=29)
 
-            self.Motor.initializeHardwareDevice()
+            print("self.Motor.initializeHardwareDevice()")
             # self.Motor2.initializeHardwareDevice()
             # self.Motor3.initializeHardwareDevice()
             # self.Motor4.initializeHardwareDevice()
             print("fw103s : Initialized all hardware")
             time.sleep(.1)
         except:
+
             print(traceback.format_exc())
             print("Failed to connect to FW103S filter wheels !")
 
@@ -37,23 +41,23 @@ class FW103S():
         """
         Moves filter wheel to indicated ND filter's position.
         """
-        self.Motor.mAbs(position)
+        print("self.Motor.mAbs(position)")
         time.sleep(.1)
 
     def getPosition(self):
         """
         Requests filter wheel position information.
         """
-        pos = self.Motor.getPos()
+        print("pos = self.Motor.getPos()")
         return pos
 
     def shutDown(self):
-        self.Motor.cleanUpAPT()
+        print("self.Motor.cleanUpAPT()")
         print("Stepper motor disconnected! ")
-    
+
+
 if (__name__ == "__main__"):
     fwheel = FW103S()
-
     fwheel.shutDown()
 
 #
@@ -79,7 +83,3 @@ if (__name__ == "__main__"):
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-
-
-        
-

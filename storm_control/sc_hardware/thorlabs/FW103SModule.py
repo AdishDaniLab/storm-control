@@ -6,14 +6,14 @@ Hazen 04/18
 """
 
 import storm_control.hal4000.halLib.halMessage as halMessage
-
-import storm_control.sc_hardware.baseClasses.amplitudeModule as amplitudeModule
+import storm_control.sc_hardware.baseClasses.filterWheelModule as filterWheelModule
+#import storm_control.sc_hardware.baseClasses.amplitudeModule as amplitudeModule
 import storm_control.sc_hardware.thorlabs.FW103S as FW103S
 
 
 # FIXME: Should be amplitudeModule.AmplitudeFunctionalityBuffered?
 #
-class FW103SFilterWheelFunctionality(amplitudeModule.AmplitudeFunctionality):
+class FW103SFilterWheelFunctionality(filterWheelModule.FilterWheelFunctionality):
 
     def __init__(self, filter_wheel = None, **kwds):
         super().__init__(**kwds)
@@ -27,21 +27,20 @@ class FW103SFilterWheelFunctionality(amplitudeModule.AmplitudeFunctionality):
         self.filter_wheel.setPosition(power)
 
 
-class FW103SFilterWheelModule(amplitudeModule.AmplitudeModule):
+class FW103SFilterWheelModule(filterWheelModule.FilterWheelFunctionality):
 
     def __init__(self, module_params = None, qt_settings = None, **kwds):
         super().__init__(**kwds)
         self.filter_wheel_functionality = None
 
         configuration = module_params.get("configuration")
-        filter_wheel = FW103S.FW103S(wavelength = configuration.get("wavelength"))
+        filter_wheel = FW103S.FW103S(serialno = configuration.get("serialno"))
                                     
 
-        if filter_wheel.getStatus():
-            self.filter_wheel_functionality = FW103SFilterWheelFunctionality(display_normalized = False,
-                                                                             filter_wheel = filter_wheel,
-                                                                             maximum = configuration.get("maximum"),
-                                                                             used_during_filming = False)
+        #if filter_wheel.getStatus():
+        self.filter_wheel_functionality = FW103SFilterWheelFunctionality(display_normalized = False,
+                                                                         filter_wheel = filter_wheel,
+                                                                         used_during_filming = False)
         
         
     def getFunctionality(self, message):
