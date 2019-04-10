@@ -13,36 +13,73 @@ class FW103S():
     """
     Encapsulates communication with a Thorlabs filter wheel through the APT dll.
     """
-    def __init__(self):
+    def __init__(self, **kwds):
         super().__init__()
         # Initializing motors
         print("fw103s : Initializing motors...")
         try:
-            self.Motor1 = APTMotor(80831436, HWTYPE=29)
-            self.Motor2 = APTMotor(80831430, HWTYPE=29)
-            self.Motor3 = APTMotor(80831429, HWTYPE=29)
-            self.Motor4 = APTMotor(80828888, HWTYPE=29)
+            self.Motor = APTMotor(80831436, HWTYPE=29)
+            # self.Motor2 = APTMotor(80831430, HWTYPE=29)
+            # self.Motor3 = APTMotor(80831429, HWTYPE=29)
+            # self.Motor4 = APTMotor(80828888, HWTYPE=29)
 
-            self.Motor1.initializeHardwareDevice()
-            self.Motor2.initializeHardwareDevice()
-            self.Motor3.initializeHardwareDevice()
-            self.Motor4.initializeHardwareDevice()
+            self.Motor.initializeHardwareDevice()
+            # self.Motor2.initializeHardwareDevice()
+            # self.Motor3.initializeHardwareDevice()
+            # self.Motor4.initializeHardwareDevice()
             print("fw103s : Initialized all hardware")
             time.sleep(.1)
         except:
             print(traceback.format_exc())
             print("Failed to connect to FW103S filter wheels !")
 
-    def setPosition(self, wavelength):
+    def setPosition(self, position):
         """
         Moves filter wheel to indicated ND filter's position.
         """
-        nd = [['ND 0', 0.0], ['ND 0.5', 60.0], ['ND 1', 120.0],
-              ['ND 1.3', 180.0], ['ND 2', 240.0], ['ND 3', 300]]
-        for (ndval, pos) in nd:
-            if ndval == self.sender().text():
-                position = pos
-            else:
-                pass
+        self.Motor.mAbs(position)
+        time.sleep(.1)
 
+    def getPosition(self):
+        """
+        Requests filter wheel position information.
+        """
+        pos = self.Motor.getPos()
+        return pos
+
+    def shutDown(self):
+        self.Motor.cleanUpAPT()
+        print("Stepper motor disconnected! ")
+    
+if (__name__ == "__main__"):
+    fwheel = FW103S()
+
+    fwheel.shutDown()
+
+#
+# The MIT License
+#
+# Copyright (c) 2012 Zhuang Lab, Harvard University
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+#
+
+
+        
 
