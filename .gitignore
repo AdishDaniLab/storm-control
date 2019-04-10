@@ -84,3 +84,12 @@ proguard/
 # Metadata
 .metadata
 
+storm_control/hal4000/.vscode/settings.json
+storm_control/hal4000/xml/ad5_illumination+cam_config.xml
+storm_control/hal4000/xml/ad6_illum+405+daq+cam_config.xml
+storm_control/hal4000/xml/ad8_405shtrtest_config.xml
+storm_control/hal4000/xml/ad9_config.xml
+storm_control/hal4000/xml/ad10_config.xml
+storm_control/hal4000/xml/ad11_config.xml
+storm_control/hal4000/xml/ad12_config.xml
+storm_control/hal4000/xml/ad13_digital_output_config.xml

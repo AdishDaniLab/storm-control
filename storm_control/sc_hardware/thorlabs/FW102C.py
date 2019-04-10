@@ -67,8 +67,8 @@ class FW102C(RS232.RS232):
 if (__name__ == "__main__"):
     fwheel = FW102C()
     print(fwheel.getID())
-    print(fwheel.setPosition(1))
-    print(fwheel.setPosition(3))
+    # print(fwheel.setPosition(1))
+    # print(fwheel.setPosition(3))
     fwheel.shutDown()
 
 
