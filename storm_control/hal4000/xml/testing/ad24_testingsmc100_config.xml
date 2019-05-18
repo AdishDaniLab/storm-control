@@ -3,7 +3,7 @@
     <!-- The starting directory. -->
     <directory type="directory">C:/Data/</directory>
     <!-- The setup name -->
-    <setup_name type="string">ad21</setup_name>
+    <setup_name type="string">ad14</setup_name>
     <!-- The ui type, this is 'classic' or 'detached' -->
     <ui_type type="string">classic</ui_type>
     <!--
@@ -129,10 +129,10 @@
                 <fsk_mode type="int">1</fsk_mode>
                 <python32_exe type="string">C:/Users/Storm1/AppData/Local/Programs/Python/Python36-32/python</python32_exe>
                 <ch647>
-                    <maximum type="int">7857</maximum>
+                    <maximum type="int">8193</maximum>
                     <channel type="int">0</channel>
                     <off_frequency type="float">20.0</off_frequency>
-                    <on_frequency type="float">90.36</on_frequency>
+                    <on_frequency type="float">89.66</on_frequency>
                 </ch647>
                 <ch561>
                     <maximum type="int">7023</maximum>
@@ -154,15 +154,6 @@
                 </ch460>
             </configuration>
         </ctech_aotf>
-        <!-- 405 laser control, functionality available as 'cube405' -->
-        <stradus405>
-            <module_name type="string">storm_control.sc_hardware.vortran.vortranModule</module_name>
-            <class_name type="string">VortranStradus</class_name>
-            <configuration>
-                <port type="string">COM15</port>
-                <used_during_filming type="boolean">True</used_during_filming>
-            </configuration>
-        </stradus405>
         <!-- DAQ control -->
         <daq>
             <module_name type="string">storm_control.sc_hardware.nationalInstruments.nidaqModule</module_name>
@@ -220,18 +211,32 @@
                         <source type="string">/Dev1/port1/line2</source>
                     </do_task>
                 </ilm460sh>
-                <ilm405>
-                    <ao_task>
-                        <source type="string">/Dev1/ao16</source>
-                    </ao_task>
-                </ilm405>
-                <ilm405sh>
-                    <do_task>
-                        <source type="string">/Dev1/port1/line3</source>
-                    </do_task>
-                </ilm405sh>
             </configuration>
         </daq>
+
+            <!-- Newport stage controller. -->
+    <newport_controller>
+      <module_name type="string">storm_control.sc_hardware.newport.smc100</module_name>
+      <class_name type="string">SMC100</class_name>
+
+      <configuration>
+	<baudrate type="int">57600</baudrate>
+	<port type="string">COM14</port>
+	<!-- <velocity type="float">50.0</velocity> -->
+      </configuration>
+    </newport_controller>
+
+    <!-- Stage control GUI -->
+    <!-- <stage>
+      <class_name type="string">Stage</class_name>
+      <module_name type="string">storm_control.hal4000.stage.stage</module_name>
+      <configuration>
+	<stage_functionality type="string">newport_controller.stage</stage_functionality>
+      </configuration>
+    </stage> -->
+
+
+
         <!-- Illumination (lasers, shutters, etc) control GUI. -->
         <illumination>
             <class_name type="string">Illumination</class_name>
@@ -247,7 +252,7 @@
                     </amplitude_modulation>
                     <analog_modulation>
                         <hw_fn_name type="string">daq.ilm647.ao_task</hw_fn_name>
-                        <max_voltage type="float">1.0</max_voltage>
+                        <max_voltage type="float">0.953</max_voltage>
                         <min_voltage type="float">0.0</min_voltage>
                     </analog_modulation>
                     <mechanical_shutter>
@@ -262,7 +267,7 @@
                     </amplitude_modulation>
                     <analog_modulation>
                         <hw_fn_name type="string">daq.ilm561.ao_task</hw_fn_name>
-                        <max_voltage type="float">1.0</max_voltage>
+                        <max_voltage type="float">0.88</max_voltage>
                         <min_voltage type="float">0.0</min_voltage>
                     </analog_modulation>
                     <mechanical_shutter>
@@ -277,7 +282,7 @@
                     </amplitude_modulation>
                     <analog_modulation>
                         <hw_fn_name type="string">daq.ilm488.ao_task</hw_fn_name>
-                        <max_voltage type="float">1.0</max_voltage>
+                        <max_voltage type="float">0.967</max_voltage>
                         <min_voltage type="float">0.0</min_voltage>
                     </analog_modulation>
                     <mechanical_shutter>
@@ -292,30 +297,16 @@
                     </amplitude_modulation>
                     <analog_modulation>
                         <hw_fn_name type="string">daq.ilm460.ao_task</hw_fn_name>
-                        <max_voltage type="float">1.0</max_voltage>
+                        <max_voltage type="float">0.933</max_voltage>
                         <min_voltage type="float">0.0</min_voltage>
                     </analog_modulation>
                     <mechanical_shutter>
                         <hw_fn_name type="string">daq.ilm460sh.do_task</hw_fn_name>
                     </mechanical_shutter>
                 </ch4>
-                <ch5>
-                    <gui_name type="string">405</gui_name>
-                    <color type="string">130,0,200</color>
-                    <amplitude_modulation>
-                        <hw_fn_name>stradus405</hw_fn_name>
-                    </amplitude_modulation>
-                    <analog_modulation>
-                        <hw_fn_name type="string">daq.ilm405.ao_task</hw_fn_name>
-                        <max_voltage type="float">5.0</max_voltage>
-                        <min_voltage type="float">0.0</min_voltage>
-                    </analog_modulation>
-                    <mechanical_shutter>
-                        <hw_fn_name type="string">daq.ilm405sh.do_task</hw_fn_name>
-                    </mechanical_shutter>
-                </ch5>
             </configuration>
         </illumination>
+
         <!-- TCP control -->
         <tcp_control>
             <module_name type="string">storm_control.hal4000.tcpControl.tcpControl</module_name>

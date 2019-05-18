@@ -5,7 +5,7 @@
   <directory type="directory">C:/Data/</directory>
 
   <!-- The setup name -->
-  <setup_name type="string">ad14</setup_name>
+  <setup_name type="string">illumination_control</setup_name>
 
   <!-- The ui type, this is 'classic' or 'detached' -->
   <ui_type type="string">classic</ui_type>
@@ -192,7 +192,7 @@
     </ctech_aotf>
 
           <!-- 405 laser control, functionality available as 'cube405' -->
-    <!-- <cube405>
+    <cube405>
       <module_name type="string">storm_control.sc_hardware.coherent.coherentModule</module_name>
       <class_name type="string">CoherentCube</class_name>
 
@@ -200,7 +200,7 @@
 	<port type="string">COM14</port>
 	<used_during_filming type="boolean">True</used_during_filming>
       </configuration>
-    </cube405> -->
+    </cube405>
     
         <!-- DAQ control -->
     <daq>
@@ -270,7 +270,7 @@
 	  </do_task>
 	</ilm460sh>
 
-        <!-- <ilm405>
+        <ilm405>
 	  <ao_task>
 	    <source type="string">/Dev1/ao16</source>
 	  </ao_task>
@@ -279,7 +279,7 @@
 	  <do_task>
 	    <source type="string">/Dev1/port1/line3</source>
 	  </do_task>
-	</ilm405sh> -->
+	</ilm405sh>
 
       </configuration>      
     </daq>
@@ -359,7 +359,7 @@
 	  </mechanical_shutter>    
 	</ch4>
 
-    <!-- <ch5>
+    <ch5>
     	  <gui_name type="string">405</gui_name>
 	  <color type="string">130,0,200</color>
 	  <amplitude_modulation>
@@ -373,7 +373,7 @@
       <mechanical_shutter>
 	    <hw_fn_name type="string">daq.ilm405sh.do_task</hw_fn_name>
 	  </mechanical_shutter>   
-	</ch5> -->
+	</ch5>
         
       </configuration>
     </illumination>

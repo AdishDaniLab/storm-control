@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-## @file
+# @file
 #
 # Communicates with the Newport SMC100 motor controller.
 #
@@ -9,39 +9,50 @@
 
 import time
 
+
 import storm_control.sc_hardware.serial.RS232 as RS232
 
-## SMC100
+# SMC100
 #
 # Encapsulates control of Newport SMC100 motor controller using RS-232.
 #
+
+
 class SMC100(RS232.RS232):
 
-    ## __init__
+    # __init__
     #
     # @param id (Optional) The id of the motor controller (integer), defaults to 1.
     # @param port (Optional) The RS-232 port to use, defaults to "COM5".
     # @param timeout (Optional) The time to wait for a response, defaults to None.
     # @param baudrate (Optional) The baud rate of the port, defaults to 57600.
     #
-    def __init__(self, id = 1, port = "COM5", timeout = None, baudrate = 57600):
-        RS232.RS232.__init__(self, port, timeout, baudrate, "\r\n", 0.1)
+    def __init__(self, **kwds):
+
+        kwds["baudrate"] = 57600
+        kwds["end_of_line"] = "\r\n"
+        kwds["wait_time"] = 0.1
+        kwds["port"] = "COM15"
+        id=1
+
         self.id = str(id)
         try:
+            # open port
+            super().__init__(**kwds)
             # check if we are referenced
             if self.amNotReferenced():
-                print "SMC100 homing."
+                print("SMC100 homing.")
                 # reference
-                self.commWithResp(self.id + "OR")
+                self.commWithResp(self.id + "1OR")
                 # wait until homed
                 while self.amHoming():
                     time.sleep(1)
         except:
-            print "SMC100 controller is not responding."
-            print "Perhaps it is not turned on, or the Keyspan COM ports have been scrambled."
+            print("SMC100 controller is not responding.")
+            print("Perhaps it is not turned on, or the Keyspan COM ports have been scrambled.")
             self.live = 0
 
-    ## _compose
+    # _compose
     #
     # Combines the command with the id of the motor controller.
     #
@@ -50,7 +61,7 @@ class SMC100(RS232.RS232):
     def _compose(self, command):
         return self.id + command
 
-    ## _command
+    # _command
     #
     # Send the command, return the response.
     #
@@ -63,7 +74,7 @@ class SMC100(RS232.RS232):
             self.sendCommand(self._compose(command))
             return self.waitResponse()[:-2]
 
-    ## amHoming
+    # amHoming
     #
     # @return 1/0 If the stage is currently homing.
     #
@@ -74,7 +85,7 @@ class SMC100(RS232.RS232):
         else:
             return 0
 
-    ## amMoving
+    # amMoving
     #
     # @return 1/0 If the stage is moving.
     #
@@ -85,19 +96,20 @@ class SMC100(RS232.RS232):
         else:
             return 0
 
-    ## amNotReferenced
+    # amNotReferenced
     #
     # @return 1/0 The stage has not been homed.
     #
     def amNotReferenced(self):
         self.state = self._command("TS")
-        assert len(self.state) == len(self.id + "TS00000A"), "SMC100 controller not responding."
+        assert len(self.state) == len(
+            self.id + "TS00000A"), "SMC100 controller not responding."
         if self.state == (self.id + "TS00000A"):
             return 1
         else:
             return 0
 
-    ## getPosition
+    # getPosition
     #
     # @return The current stage position.
     #
@@ -107,7 +119,7 @@ class SMC100(RS232.RS232):
         except:
             return -1.0
 
-    ## moveTo
+    # moveTo
     #
     # @param position The position to move to.
     #
@@ -116,10 +128,10 @@ class SMC100(RS232.RS232):
         self.commWithResp(self.id + "PA"+str(self.position))
         error = self._command("TE")
         if not (error == (self.id + "TE@")):
-            print "SMC100 motion error:", error
+            print("SMC100 motion error:", error)
         self.position = float(self._command("TP")[3:])
 
-    ## stopMove
+    # stopMove
     #
     # Tell the stage to stop motion.
     #
@@ -129,15 +141,20 @@ class SMC100(RS232.RS232):
 
 #
 # Testing
-# 
+#
+
 
 if __name__ == "__main__":
-    smc100 = SMC100(id = 3)
+    
+    smc100 = SMC100()
     pos = smc100.getPosition()
-    print pos
-    print smc100._command("TE")
-    print smc100._command("TS")
-    smc100.moveTo(0.0)
+    print(pos)
+    print(smc100._command("TE"))
+    print(smc100._command("TS"))
+    # smc100.moveTo(2.0)
+    # pos2 = smc100.getPosition()
+    # print (pos2)
+    kapish=input("Quit? (y/n) : ")
     smc100.shutDown()
 
 #

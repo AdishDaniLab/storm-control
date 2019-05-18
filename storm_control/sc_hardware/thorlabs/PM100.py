@@ -7,8 +7,8 @@
 #
 # Hazen 2/09
 #
-
-import lib.RS232 as RS232
+import serial
+import RS232 as RS232
 
 ## powerMeter
 #

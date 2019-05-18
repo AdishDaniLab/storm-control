@@ -359,15 +359,29 @@ class AOTFTelnet(AOTF):
 # Testing.
 #
 if (__name__ == "__main__"):
-    #my_aotf = AOTF()
-    #my_aotf = AOTF64Bit(python32_exe = "C:/Users/hazen/AppData/Local/Programs/Python/Python36-32/python")
-    my_aotf = AOTFTelnet("192.168.10.3")
+    
+    my_aotf = AOTF64Bit(python32_exe = "C:/Users/Storm1/AppData/Local/Programs/Python/Python36-32/python")
 
     if not my_aotf.getStatus():
         exit()
 
     print(my_aotf._sendCmd("BoardID ID"))
-    print(my_aotf._sendCmd("dds f 0 88.6"))
+    print(my_aotf._sendCmd("dau en"))
+    print(my_aotf._sendCmd("dau gain * 255"))
+    print(my_aotf._sendCmd("dau dis"))
+    print(my_aotf._sendCmd("dds fsk 0 1"))
+    print(my_aotf._sendCmd("dds f 0 20.0 89.66 20.0 20.0"))
+    print(my_aotf._sendCmd("dds fsk 1 1"))
+    print(my_aotf._sendCmd("dds f 1 20.0 107.03 20.0 20.0"))
+    print(my_aotf._sendCmd("dds fsk 2 1"))
+    print(my_aotf._sendCmd("dds f 2 20.0 130.20 20.0 20.0"))
+    print(my_aotf._sendCmd("dds fsk 3 1"))
+    print(my_aotf._sendCmd("dds f 3 20.0 141.03 20.0 20.0"))
+    print(my_aotf._sendCmd("dds a 0 8193"))
+    print(my_aotf._sendCmd("dds a 1 7023"))
+    print(my_aotf._sendCmd("dds a 2 12873"))
+    print(my_aotf._sendCmd("dds a 3 6633"))
+    
 
 #    start_time = time.time()
 #    for i in range(100):
@@ -378,6 +392,8 @@ if (__name__ == "__main__"):
 #            #print my_aotf._sendCmd("dds a " + str(j) + " 0")
 #    print("elapsed time ", time.time() - start_time)
 #    time.sleep(1.0)
+
+    kapish = input("Shutdown ? : ")
     my_aotf.shutDown()
 
 #
