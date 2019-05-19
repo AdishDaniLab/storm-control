@@ -50,8 +50,9 @@ class Stradus(RS232.RS232):
         """
         Convert a response from the laser to a floating point number.
         """
-        print("Response is : ", resp)
-        return float(resp[start:-1])
+        # print("Response is : ")
+        print("i", resp[start:-13], "i")
+        return float(resp[start:-13])
 
     def getExtControl(self):
         """
@@ -81,14 +82,20 @@ class Stradus(RS232.RS232):
         """
         Returns the laser power range (in mW?).
         """
-        #self.sendCommand("?MINLP")
-        #print("?MINLP")
-        #pmin = self.respToFloat(self.waitResponse(), 6)
+        # self.sendCommand("?MINLP")
+        # print("?MINLP")
+        # print("Minimum : ", self.waitResponse())
+        # pmin1 = self.respToFloat(self.waitResponse(), 6)
+        # self.waitResponse()
         pmin = 0.5
         self.sendCommand("?MAXP")
-
-        #pmax = self.respToFloat(self.waitResponse(), 6)
-        pmax = 20.0
+        # print("Maximum : ", self.waitResponse())
+        print("Sent command.")
+        # import pdb
+        # pdb.set_trace()
+        pmax = self.respToFloat(self.waitResponse(), 14)
+        print("Got response.")
+        # pmax = 20.0
         return [pmin, pmax]
 
     def getPower(self):
@@ -144,11 +151,14 @@ class Stradus(RS232.RS232):
 # Testing
 #
 if (__name__ == "__main__"):
-    stradus = Stradus(port = "COM15")
+    stradus = Stradus(port = "COM14")
     if stradus.getStatus():
-        print(stradus.getPowerRange())
-        print(stradus.getLaserOnOff())
-        stradus.shutDown()
+        try:
+            print(stradus.getPowerRange())
+            print(stradus.getLaserOnOff())
+        except:
+            stradus.shutDown()
+    stradus.shutDown()
 
 #
 # The MIT License

@@ -9,6 +9,12 @@
 
 import sys
 
+import storm_control.sc_library.parameters as params
+
+import storm_control.hal4000.halLib.halDialog as halDialog
+import storm_control.hal4000.halLib.halMessage as halMessage
+import storm_control.hal4000.halLib.halModule as halModule
+
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtGui import QIcon, QPixmap
@@ -35,10 +41,11 @@ import storm_control.sc_hardware.newport.smc100 as SMC100
 #
 
 
-class MiscControl(QtWidgets.QDialog):
-    def __init__(self, parameters, parent=None):
-        QMainWindow.__init__(self, parent)
-
+class NewportControl(halDialog.HalDialog):
+    def __init__(self, configuration = None, **kwds):
+        super().__init__(**kwds)
+        # QMainWindow.__init__(self, parent)
+        self.parameters = params.StormXMLObject()
         self.debug = 0
         self.move_timer = QTimer(self)
         self.move_timer.setInterval(50)
@@ -63,8 +70,7 @@ class MiscControl(QtWidgets.QDialog):
 
         if self.have_parent:
             self.ui.okButton.setText("Close")
-            self.connect(self.ui.okButton, QtCore.SIGNAL(
-                "clicked()"), self.handleOk)
+            self.okButton.clicked.connect(self.handleOk)
         else:
             self.okButton.setText("Quit")
             self.okButton.clicked.connect(self.handleQuit)
@@ -109,7 +115,7 @@ class MiscControl(QtWidgets.QDialog):
 
         self.setWindowTitle("Newport Stage Control")
         self.setGeometry(self.left, self.top, self.width, self.height)
-        self.setWindowIcon(QIcon('p202.png'))
+
         # Build the GUI layout here.
 
         self.EPIButton = QToolButton()
@@ -270,34 +276,53 @@ class MiscControl(QtWidgets.QDialog):
       # while self.smc100.amHoming():
       #     time.sleep(1)
         pass
+class NewportSMC100(halModule.HalModule):
 
-    # def arKrChange(self, value):
-    #     if self.debug:
-    #         print ("arKrChange")
-    #     self.arkrpower = value
-    #     self.ui.arKrAmps.setText("{0:.1f} Amps".format(self.arkrpower))
-    #     self.ui.arKrButton.show()
+    def __init__(self, module_params = None, qt_settings = None, **kwds):
+        super().__init__(**kwds)
+        self.configuration = module_params.get("configuration")
 
-    # def changeArKrPower(self):
-    #     if self.debug:
-    #         print ("changeArKrPower")
-    #     self.innova.setLaserCurrent(self.arkrpower)
-    #     self.ui.arKrButton.hide()
+        self.view = ZStageView(module_name = self.module_name,
+                               configuration = module_params.get("configuration"))
+        self.view.halDialogInit(qt_settings,
+                                module_params.get("setup_name") + " z stage")
 
-    # def changedYAGPower(self):
-    #     if self.debug:
-    #         print ("changeYAGPower")
-    #     if (self.old_dYAG_power != self.dYAG_power):
-    #         self.compass.setPower(self.dYAG_power/self.dYAG_max)
-    #         self.old_dYAG_power = self.dYAG_power
-    #     self.ui.dYAGButton.hide()
+    def cleanUp(self, qt_settings):
+        self.view.cleanUp(qt_settings)
 
-    # def dYAGChange(self, value):
-    #     if self.debug:
-    #         print ("dYAGChange")
-    #     self.dYAG_power = (float(value)/float(self.ui.dYAGSlider.maximum())) * self.dYAG_max
-    #     self.ui.dYAGText.setText(str(self.dYAG_power) + " mw")
-    #     self.ui.dYAGButton.show()
+    def handleResponse(self, message, response):
+        if message.isType("get functionality"):
+            self.view.setFunctionality(response.getData()["functionality"])
+
+    def processMessage(self, message):
+
+        if message.isType("configure1"):
+            self.sendMessage(halMessage.HalMessage(m_type = "add to menu",
+                                                   data = {"item name" : "Z Stage",
+                                                           "item data" : "z stage"}))
+
+            self.sendMessage(halMessage.HalMessage(m_type = "get functionality",
+                                                   data = {"name" : self.configuration.get("z_stage_fn")}))
+
+            self.sendMessage(halMessage.HalMessage(m_type = "initial parameters",
+                                                   data = {"parameters" : self.view.getParameters()}))            
+
+        elif message.isType("new parameters"):
+            p = message.getData()["parameters"]
+            message.addResponse(halMessage.HalMessageResponse(source = self.module_name,
+                                                              data = {"old parameters" : self.view.getParameters().copy()}))
+            self.view.newParameters(p.get(self.module_name))
+            message.addResponse(halMessage.HalMessageResponse(source = self.module_name,
+                                                              data = {"new parameters" : self.view.getParameters()}))
+
+        elif message.isType("show"):
+            if (message.getData()["show"] == "z stage"):
+                self.view.show()
+
+        elif message.isType("start"):
+            if message.getData()["show_gui"]:
+                self.view.showIfVisible()
+
 
 #
 # testing
@@ -308,8 +333,8 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     s = QStyleFactory.create('Fusion')  # Fusion is a button style
     app.setStyle(s)
-    miscControl = MiscControl(0)
-    miscControl.show()
+    newportControl = NewportControl(0)
+    newportControl.show()
     app.exec_()
 
 

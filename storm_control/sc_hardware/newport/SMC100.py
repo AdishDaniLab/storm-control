@@ -33,9 +33,12 @@ class SMC100(RS232.RS232):
         kwds["end_of_line"] = "\r\n"
         kwds["wait_time"] = 0.1
         kwds["port"] = "COM15"
-        id=1
 
+        self.live = True
+        # When there is only one newport controller connected, its id is 1.
+        id=1
         self.id = str(id)
+
         try:
             # open port
             super().__init__(**kwds)
@@ -48,9 +51,11 @@ class SMC100(RS232.RS232):
                 while self.amHoming():
                     time.sleep(1)
         except:
+            print(traceback.format_exc())
+            self.live = False
             print("SMC100 controller is not responding.")
             print("Perhaps it is not turned on, or the Keyspan COM ports have been scrambled.")
-            self.live = 0
+            
 
     # _compose
     #
