@@ -1,0 +1,1 @@
+The settings files in this folder are all meant for the iXon Ultra Andor camera.

@@ -89,13 +89,12 @@ class Stradus(RS232.RS232):
         # self.waitResponse()
         pmin = 0.5
         self.sendCommand("?MAXP")
-        # print("Maximum : ", self.waitResponse())
-        print("Sent command.")
+        # print("Sent command.")
         # import pdb
         # pdb.set_trace()
-        pmax = self.respToFloat(self.waitResponse(), 14)
-        print("Got response.")
-        # pmax = 20.0
+        # pmax = self.respToFloat(self.waitResponse(), 14)
+        # print("Got response.")
+        pmax = 20.0
         return [pmin, pmax]
 
     def getPower(self):

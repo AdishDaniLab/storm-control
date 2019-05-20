@@ -225,11 +225,11 @@
                         <source type="string">/Dev1/ao16</source>
                     </ao_task>
                 </ilm405>
-                <ilm405sh>
+                <!-- <ilm405sh>
                     <do_task>
                         <source type="string">/Dev1/port1/line3</source>
                     </do_task>
-                </ilm405sh>
+                </ilm405sh> -->
             </configuration>
         </daq>
         <illumination>
@@ -309,9 +309,9 @@
                         <max_voltage type="float">5.0</max_voltage>
                         <min_voltage type="float">0.0</min_voltage>
                     </analog_modulation>
-                    <mechanical_shutter>
+                    <!-- <mechanical_shutter>
                         <hw_fn_name type="string">daq.ilm405sh.do_task</hw_fn_name>
-                    </mechanical_shutter>
+                    </mechanical_shutter> -->
                 </ch5>
             </configuration>
         </illumination>
