@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 """
-Generic Vortran Stradus laser control (via RS-232)
+Vortran Stradus laser control (via RS-232)
 
-Hazen 7/10
+Gayatri 5/19
 """
 import traceback
-
 import storm_control.sc_hardware.serial.RS232 as RS232
 
 class Stradus(RS232.RS232):
@@ -18,9 +17,9 @@ class Stradus(RS232.RS232):
         """
         # Add Stradus RS232 default settings.
         kwds["baudrate"] = 19200
-        kwds["end_of_line"] = "\r"
+        # kwds["end_of_line"] = "\r"
         kwds["wait_time"] = 0.05
-
+        # kwds["timeout"] = None
         self.on = False
         self.pmin = 0.0
         self.pmax = 5.0
@@ -39,28 +38,31 @@ class Stradus(RS232.RS232):
             print("Failed to connect to Stradus Laser at port", kwds["port"])
             print("Perhaps it is turned off or the COM ports have")
             print("been scrambled?")
-            
+
         if self.live:
             [self.pmin, self.pmax] = self.getPowerRange()
-            self.setExtControl(0)
+            self.setExtControl(False)
             if (not self.getLaserOnOff()):
                 self.setLaserOnOff(True)
+                self.setPower(001.0)
 
-    def respToFloat(self, resp, start):
+    def respToFloat(self, resp):
         """
         Convert a response from the laser to a floating point number.
         """
-        # print("Response is : ")
-        print("i", resp[start:-13], "i")
-        return float(resp[start:-13])
+        return float(resp.rsplit("=", 1)[1][:-12])
 
     def getExtControl(self):
         """
         Checks if the laser is configured for external control.
         """
         self.sendCommand("?EPC")
-        response = self.waitResponse()
-        if (response.find("=1") == -1):
+        response = self.waitResponse(end_of_response = '\r\nStradus:')
+
+        # I don't know if end_of_response = '\r\nStradus:' has any effect on output.
+        # Anyway , let it be.
+
+        if (response.rsplit("=", 1)[1][:-13] == '0'):
             return False
         else:
             return True
@@ -70,8 +72,8 @@ class Stradus(RS232.RS232):
         Checks if the laser is on or off.
         """
         self.sendCommand("?LE")
-        resp = self.waitResponse()
-        if (resp[2] == "1"):
+        resp = self.waitResponse(end_of_response = '\r\nStradus:')
+        if (resp.rsplit("=", 1)[1][:-12] == "1"):
             self.on = True
             return True
         else:
@@ -86,15 +88,10 @@ class Stradus(RS232.RS232):
         # print("?MINLP")
         # print("Minimum : ", self.waitResponse())
         # pmin1 = self.respToFloat(self.waitResponse(), 6)
-        # self.waitResponse()
-        pmin = 0.5
+        pmin = 001.0
         self.sendCommand("?MAXP")
-        # print("Sent command.")
-        # import pdb
-        # pdb.set_trace()
-        # pmax = self.respToFloat(self.waitResponse(), 14)
-        # print("Got response.")
-        pmax = 20.0
+        resp=self.waitResponse(end_of_response = '\r\nStradus:')
+        pmax = self.respToFloat(resp)
         return [pmin, pmax]
 
     def getPower(self):
@@ -103,7 +100,7 @@ class Stradus(RS232.RS232):
         """
         self.sendCommand("?LP")
         power_string = self.waitResponse()
-        return float(power_string[3:-1])
+        return float(power_string.rsplit("=", 1)[1][:-12])
 
     def setExtControl(self, mode):
         """
@@ -111,9 +108,10 @@ class Stradus(RS232.RS232):
         """
         if mode:
             self.sendCommand("EPC=1")
+            self.waitResponse(end_of_response = '\r\nStradus:')
         else:
             self.sendCommand("EPC=0")
-        self.waitResponse()
+            self.waitResponse(end_of_response = '\r\nStradus:')
 
     def setLaserOnOff(self, on):
         """
@@ -121,11 +119,11 @@ class Stradus(RS232.RS232):
         """
         if on and (not self.on):
             self.sendCommand("LE=1")
-            self.waitResponse()
+            self.waitResponse(end_of_response = '\r\nStradus:')
             self.on = True
         if (not on) and self.on:
             self.sendCommand("LE=0")
-            self.waitResponse()
+            self.waitResponse(end_of_response = '\r\nStradus:')
             self.on = False
 
     def setPower(self, power_in_mw):
@@ -134,8 +132,15 @@ class Stradus(RS232.RS232):
         """
         if power_in_mw > self.pmax:
             power_in_mw = self.pmax
-        self.sendCommand("LP=" + str(power_in_mw))
-        self.waitResponse()
+        power_in_mw = str(round(power_in_mw, 1)).zfill(5) 
+        # 'zfill' is used to make command format LP=###.# (mW) as mentioned in the command reference.
+        # For example, LP=10.05 may not work. But LP=010.1 will work. 
+        # Also, the laser ignores the command if I try to set power as 000.0. Minimum power when laser
+        # emission is enabled is 1.4 mW. I can get this by sending command LP=001.0 instead.
+        if power_in_mw == '000.0' :
+            power_in_mw = '001.0'
+        self.sendCommand("LP=" + power_in_mw)
+        self.waitResponse(end_of_response = '\r\nStradus:')
 
     def shutDown(self):
         """
@@ -145,19 +150,28 @@ class Stradus(RS232.RS232):
             self.setLaserOnOff(False)
         super().shutDown()
 
-        
+
 #
 # Testing
 #
 if (__name__ == "__main__"):
-    stradus = Stradus(port = "COM14")
+    stradus = Stradus(port="COM14")
+    kapish = 'y'
     if stradus.getStatus():
-        try:
-            print(stradus.getPowerRange())
-            print(stradus.getLaserOnOff())
-        except:
-            stradus.shutDown()
-    stradus.shutDown()
+        while(kapish == 'y'):
+            instruction = input("Send : ")
+            stradus.sendCommand(str(instruction))
+            # time.sleep(0.5)
+            response = stradus.waitResponse(end_of_response="\r\nStradus:")
+            print(response)
+            # print("Response : ", response.rsplit("=", 1)[1][:-1])
+            # print("Power range : ", stradus.getPowerRange())
+            kapish = input("Again ? (y/n) : ")
+
+            
+        stradus.shutDown()
+    else:
+        sys.exit()
 
 #
 # The MIT License
@@ -182,4 +196,3 @@ if (__name__ == "__main__"):
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-

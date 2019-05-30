@@ -7,21 +7,21 @@
     channel number.
 	-->
 <repeat>
-    <frames>4</frames>
-    <oversampling>4</oversampling>
+    <frames>2</frames>
+    <oversampling>1</oversampling>
     <by_name>1</by_name>
     <event>
         <channel>561</channel>
         <power>1.0</power>
-        <on>1</on>
-        <off>2</off>
+        <on>0</on>
+        <off>1</off>
         <color>0,247,255</color>
     </event>
     <event>
         <channel>405</channel>
         <power>1.0</power>
-        <on>2</on>
-        <off>3</off>
+        <on>1</on>
+        <off>2</off>
         <color>130,0,200</color>
     </event>
 </repeat>

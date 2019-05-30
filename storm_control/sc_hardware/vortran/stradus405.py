@@ -19,9 +19,9 @@ class Stradus405(stradus.Stradus):
     #
     # Initiate RS-232 communication, verify that the laser is responding.
     #
-    # @param port (Optional) A string that specifies the port, the default is "COM13".
+    # @param port (Optional) A string that specifies the port, the default is "COM14".
     #
-    def __init__(self, port = "COM15"):
+    def __init__(self, port = "COM14"):
         stradus.Stradus.__init__(self, port)
 
 #
@@ -29,7 +29,7 @@ class Stradus405(stradus.Stradus):
 #
 
 if __name__ == "__main__":
-    stradus = Stradus405(port = "COM15")
+    stradus = Stradus405(port = "COM14")
     if stradus.getStatus():
         print stradus.getPowerRange()
         print stradus.getLaserOnOff()

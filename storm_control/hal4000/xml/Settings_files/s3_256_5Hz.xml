@@ -13,7 +13,7 @@
         <emccd_advanced type="boolean">False</emccd_advanced>
         <emccd_gain type="int">1</emccd_gain>
         <emgainmode type="int">0</emgainmode>
-        <exposure_time type="float">0.04825</exposure_time>
+        <exposure_time type="float">0.5</exposure_time>
         <extension type="string"/>
         <external_trigger type="boolean">False</external_trigger>
         <flip_horizontal type="boolean">False</flip_horizontal>
