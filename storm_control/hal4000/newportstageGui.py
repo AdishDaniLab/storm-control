@@ -78,7 +78,10 @@ class MiscControl(QtWidgets.QDialog):
         self.leftLargeButton.clicked.connect(self.largeLeft)
         self.rightLargeButton.clicked.connect(self.largeRight)
         self.tirGoButton.clicked.connect(self.goToX)
-
+        self.rightLarge.clicked.connect(self.largeRightSmall)
+        self.leftSmall.clicked.connect(self.smallLeftSmall)
+        self.rightSmall.clicked.connect(self.smallRightSmall)
+        self.leftLarge.clicked.connect(self.largeLeftSmall)
 ####################################################################################################
 
         # set modeless
@@ -87,6 +90,7 @@ class MiscControl(QtWidgets.QDialog):
         self.epi_position = 17.6
         self.tirf_position = 19.9
         self.jog_size = 0.05
+        self.jog_size_small = 0.01
 
         if parameters:
             self.newParameters(parameters)
@@ -118,8 +122,14 @@ class MiscControl(QtWidgets.QDialog):
         self.leftSmallButton = QToolButton()
         self.rightSmallButton = QToolButton()
         self.rightLargeButton = QToolButton()
+        self.leftLarge = QToolButton()
+        self.leftSmall = QToolButton()
+        self.rightSmall = QToolButton()
+        self.rightLarge = QToolButton()
         self.okButton = QPushButton('Quit', self)
         self.positionDisplay = QLabel()
+        self.readMe = QLabel()
+        self.readMe.setText("EPI : 17.6\nTIRF : 19.9\n\u2BC7 : jog size 0.05\n\u2BC7\u2BC7 : jog size 0.5\n<- : jog size 0.01\n<-- : jog size 0.1")
         self.posInput = QDoubleSpinBox()
         self.tirGoButton = QPushButton('Go to', self)
 
@@ -136,12 +146,22 @@ class MiscControl(QtWidgets.QDialog):
         self.rightSmallButton.setChecked(False)
         self.rightLargeButton.setText('\u2BC8\u2BC8')
         self.rightLargeButton.setChecked(False)
+        self.leftLarge.setText('<--')
+        self.leftLarge.setChecked(False)
+        self.leftSmall.setText('<-')
+        self.leftSmall.setChecked(False)
+        self.rightLarge.setText('-->')
+        self.rightLarge.setChecked(False)
+        self.rightSmall.setText('->')
+        self.rightSmall.setChecked(False)
         self.posInput.setMinimum(0.000)
         self.posInput.setMaximum(25.000)
         self.posInput.singleStep()
 
         self.tirGoButton.setChecked(False)
         
+        # mastergrid = QGridLayout()
+
 
         grid = QGridLayout()
         grid.addWidget(self.EPIButton, 0, 0)
@@ -151,10 +171,20 @@ class MiscControl(QtWidgets.QDialog):
         grid.addWidget(self.rightLargeButton, 0, 4)
         grid.addWidget(self.TIRFButton, 0, 5)
         grid.addWidget(self.positionDisplay, 0, 6)
+        grid.addWidget(self.leftLarge, 1, 1)
+        grid.addWidget(self.leftSmall, 1, 2)
+        grid.addWidget(self.rightSmall, 1, 3)
+        grid.addWidget(self.rightLarge, 1, 4)
+        grid.addWidget(self.readMe, 4, 6)
         grid.addWidget(self.posInput, 3, 5)
         grid.addWidget(self.tirGoButton, 3, 6)
-        grid.addWidget(self.okButton, 4, 6)
+        
+        grid.addWidget(self.okButton, 5, 6)
         self.setLayout(grid)
+
+        # mastergrid.addWidget(self.mainControls(), 0, 0)
+        # mastergrid.addWidget(self.readMe, 1, 0)
+        # self.setLayout(mastergrid)
 
         self.show()
 
@@ -171,6 +201,98 @@ class MiscControl(QtWidgets.QDialog):
             self.hide()
         else:
             self.quit()
+
+    # def mainControls(self):
+    #     '''
+    #     Stage control
+    #     '''
+    #     groupBox = QGroupBox('561')
+    #     grid = QGridLayout()
+
+    #     self.EPIButton = QToolButton()
+    #     self.TIRFButton = QToolButton()
+    #     self.leftLargeButton = QToolButton()
+    #     self.leftSmallButton = QToolButton()
+    #     self.rightSmallButton = QToolButton()
+    #     self.rightLargeButton = QToolButton()
+    #     self.leftLarge = QToolButton()
+    #     self.leftSmall = QToolButton()
+    #     self.rightSmall = QToolButton()
+    #     self.rightLarge = QToolButton()
+    #     self.okButton = QPushButton('Quit', self)
+    #     self.positionDisplay = QLabel()
+    #     self.readMe = QLabel()
+    #     self.readMe.setText("EPI : 17.6\nTIRF : 19.9\n\u2BC7 : jog size 0.05\n\u2BC7\u2BC7 : jog size 0.5")
+    #     self.posInput = QDoubleSpinBox()
+    #     self.tirGoButton = QPushButton('Go to', self)
+
+
+    #     self.EPIButton.setText('EPI')
+    #     self.EPIButton.setChecked(False)
+    #     self.TIRFButton.setText('TIRF')
+    #     self.TIRFButton.setChecked(False)
+    #     self.leftLargeButton.setText('\u2BC7\u2BC7')
+    #     self.leftLargeButton.setChecked(False)
+    #     self.leftSmallButton.setText('\u2BC7')
+    #     self.leftSmallButton.setChecked(False)
+    #     self.rightSmallButton.setText('\u2BC8')
+    #     self.rightSmallButton.setChecked(False)
+    #     self.rightLargeButton.setText('\u2BC8\u2BC8')
+    #     self.rightLargeButton.setChecked(False)
+    #     self.leftLarge.setText('<--')
+    #     self.leftLarge.setChecked(False)
+    #     self.leftSmall.setText('<-')
+    #     self.leftSmall.setChecked(False)
+    #     self.rightLarge.setText('-->')
+    #     self.rightLarge.setChecked(False)
+    #     self.rightSmall.setText('->')
+    #     self.rightSmall.setChecked(False)
+    #     self.posInput.setMinimum(0.000)
+    #     self.posInput.setMaximum(25.000)
+    #     self.posInput.singleStep()
+
+    #     self.tirGoButton.setChecked(False)
+
+    #     if self.have_parent:
+    #         self.ui.okButton.setText("Close")
+    #         self.connect(self.ui.okButton, QtCore.SIGNAL(
+    #             "clicked()"), self.handleOk)
+    #     else:
+    #         self.okButton.setText("Quit")
+    #         self.okButton.clicked.connect(self.handleQuit)
+
+    #     self.EPIButton.clicked.connect(self.goToEPI)
+    #     self.TIRFButton.clicked.connect(self.goToTIRF)
+    #     self.move_timer.timeout.connect(self.updatePosition)
+    #     self.posInput.valueChanged.connect(self.updatePosition)
+    #     self.leftSmallButton.clicked.connect(self.smallLeft)
+    #     self.rightSmallButton.clicked.connect(self.smallRight)
+    #     self.leftLargeButton.clicked.connect(self.largeLeft)
+    #     self.rightLargeButton.clicked.connect(self.largeRight)
+    #     self.tirGoButton.clicked.connect(self.goToX)
+    #     self.rightLarge.clicked.connect(self.largeRightSmall)
+    #     self.leftSmall.clicked.connect(self.smallLeftSmall)
+    #     self.rightSmall.clicked.connect(self.smallRightSmall)
+    #     self.leftLarge.clicked.connect(self.largeLeftSmall)
+
+    #     grid.addWidget(self.EPIButton, 0, 0)
+    #     grid.addWidget(self.leftLargeButton, 0, 1)
+    #     grid.addWidget(self.leftSmallButton, 0, 2)
+    #     grid.addWidget(self.rightSmallButton, 0, 3)
+    #     grid.addWidget(self.rightLargeButton, 0, 4)
+    #     grid.addWidget(self.TIRFButton, 0, 5)
+    #     grid.addWidget(self.positionDisplay, 0, 6)
+    #     grid.addWidget(self.leftLarge, 1, 1)
+    #     grid.addWidget(self.leftSmall, 1, 2)
+    #     grid.addWidget(self.rightSmall, 1, 3)
+    #     grid.addWidget(self.rightLarge, 1, 4)
+    #     grid.addWidget(self.posInput, 3, 5)
+    #     grid.addWidget(self.tirGoButton, 3, 6)
+
+   
+    #     grid.addWidget(self.okButton, 4, 6)
+    #     groupBox.setLayout(grid)
+
 
     def goToEPI(self):
         if self.debug:
@@ -217,6 +339,20 @@ class MiscControl(QtWidgets.QDialog):
             self.position += 10.0 * self.jog_size
             self.moveStage()
 
+    def largeLeftSmall(self):
+        if self.debug:
+            print(" largeLeft")
+        if self.position > 14.0:
+            self.position -= 10.0 * self.jog_size_small
+            self.moveStage()
+
+    def largeRightSmall(self):
+        if self.debug:
+            print(" largeRight")
+        if self.position < 23.0:
+            self.position += 10.0 * self.jog_size_small
+            self.moveStage()
+
     # def moveStage(self, pos):
     def moveStage(self):
         self.move_timer.start()
@@ -246,6 +382,20 @@ class MiscControl(QtWidgets.QDialog):
             print(" smallRight")
         if self.position < 23.0:
             self.position += self.jog_size
+            self.moveStage()
+
+    def smallLeftSmall(self):
+        if self.debug:
+            print(" smallLeft")
+        if self.position > 14.0:
+            self.position -= self.jog_size_small
+            self.moveStage()
+
+    def smallRightSmall(self):
+        if self.debug:
+            print(" smallRight")
+        if self.position < 23.0:
+            self.position += self.jog_size_small
             self.moveStage()
 
     def setPositionText(self):
