@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<settings>
+  <acquisition validate="True">
+    <notes type="string"/>
+    <number_frames type="int">754</number_frames>
+    <version type="string"/>
+  </acquisition>
+  <camera1 validate="True">
+    <adchannel type="int">0</adchannel>
+    <baselineclamp type="boolean">True</baselineclamp>
+    <default_max type="int">2000</default_max>
+    <default_min type="int">100</default_min>
+    <emccd_advanced type="boolean">False</emccd_advanced>
+    <emccd_gain type="int">1</emccd_gain>
+    <emgainmode type="int">0</emgainmode>
+    
+    <exposure_time type="float">0.04825</exposure_time>
+    
+    <extension type="string"/>
+    <external_trigger type="boolean">False</external_trigger>
+    <flip_horizontal type="boolean">False</flip_horizontal>
+    <flip_vertical type="boolean">False</flip_vertical>
+      <!--
+    <fps type="float">25</fps>
+        -->
+    <frame_transfer_mode type="int">1</frame_transfer_mode>
+    <head_model type="string">DU897_BV</head_model>
+    <hsspeed type="float">10.0</hsspeed>
+    <isolated_cropmode type="boolean">False</isolated_cropmode>
+    <kinetic_cycle_time type="float">0.0</kinetic_cycle_time>
+    <low_during_filming type="boolean">False</low_during_filming>
+    <off_during_filming type="boolean">False</off_during_filming>
+    <preampgain type="float">1.0</preampgain>
+    <saved type="boolean">True</saved>
+    <temperature type="int">-70</temperature>
+    <transpose type="boolean">False</transpose>
+    <vsamplitude type="int">0</vsamplitude>
+    <vsspeed type="float">3.3</vsspeed>
+    <x_bin type="int">1</x_bin>
+    <x_end type="int">512</x_end>
+    <x_pixels type="int">512</x_pixels>
+    <x_start type="int">1</x_start>
+    <y_bin type="int">1</y_bin>
+    <y_end type="int">512</y_end>
+    <y_pixels type="int">512</y_pixels>
+    <y_start type="int">1</y_start>
+  </camera1>
+  <display00 validate="False">
+    <camera1 validate="True">
+      <center_x type="float">127.0</center_x>
+      <center_y type="float">127.0</center_y>
+      <colortable type="string">ramp.ctbl</colortable>
+      <display_max type="int">2000</display_max>
+      <display_min type="int">100</display_min>
+      <initialized type="boolean">True</initialized>
+      <scale type="int">0</scale>
+      <sync type="int">0</sync>
+    </camera1>
+    <feed_name type="string">camera1</feed_name>
+  </display00>
+  <film validate="False">
+    <acq_mode type="string">run_till_abort</acq_mode>
+    <auto_increment type="boolean">True</auto_increment>
+    <auto_shutters type="boolean">True</auto_shutters>
+    <extension type="string"/>
+    <filename type="string">movie</filename>
+    <filetype type="string">.dax</filetype>
+    <frames type="int">10</frames>
+    <want_bell type="boolean">True</want_bell>
+  </film>
+  <mosaic validate="False">
+    <flip_horizontal type="boolean">False</flip_horizontal>
+    <flip_vertical type="boolean">False</flip_vertical>
+    <obj1 type="custom">60x,0.120,0.0,0.0</obj1>
+    <obj2 type="custom">10x,1.60,0.0,0.0</obj2>
+    <obj3 type="custom">4x,4.0,0.0,0.0</obj3>
+    <objective type="string">obj2</objective>
+    <transpose type="boolean">False</transpose>
+  </mosaic>
+  <timing validate="True">
+    <time_base type="string">camera1</time_base>
+  </timing>
+</settings>

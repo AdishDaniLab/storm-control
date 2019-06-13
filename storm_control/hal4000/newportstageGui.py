@@ -84,7 +84,7 @@ class MiscControl(QtWidgets.QDialog):
         # set modeless
         self.setModal(False)
         self.home_position = 0.0
-        self.epi_position = 17.2
+        self.epi_position = 17.6
         self.tirf_position = 19.9
         self.jog_size = 0.05
 

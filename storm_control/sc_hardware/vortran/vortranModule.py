@@ -25,7 +25,7 @@ class VortranLaserFunctionality(amplitudeModule.AmplitudeFunctionalityBuffered):
         # FIXME: We could build up a back-log here if the user
         #        gets carried away toggling the shutter button.
         self.mustRun(task = self.laser.setPower, args = [0.01 * power])
-        
+
         # self.mustRun(task = self.laser.setLaserOnOff,
         #              args = [state])
         # self.maybeRun(task = self.laser.setPower, args = [0.01 * power])
