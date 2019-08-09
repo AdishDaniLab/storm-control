@@ -41,7 +41,7 @@ class Stradus(RS232.RS232):
 
         if self.live:
             [self.pmin, self.pmax] = self.getPowerRange()
-            self.setExtControl(False)
+            self.setExtControl(True)
             if (not self.getLaserOnOff()):
                 self.setLaserOnOff(True)
                 self.setPower(001.0)

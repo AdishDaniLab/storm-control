@@ -61,7 +61,8 @@ class VortranModule(amplitudeModule.AmplitudeModule):
 
     def setExtControl(self, state):
         self.device_mutex.lock()
-        self.laser.setExtControl(state)
+        # self.laser.setExtControl(True)
+        # I disabled external control. It is enabled during initialization and stays that way.
         self.device_mutex.unlock()
                 
     def startFilm(self, message):
@@ -76,7 +77,8 @@ class VortranModule(amplitudeModule.AmplitudeModule):
         if self.film_mode:
             hardwareModule.runHardwareTask(self,
                                            message,
-                                           lambda : self.setExtControl(False))
+                                           lambda : self.setExtControl(False)) 
+                                           #There is no need to set external control as false
             self.film_mode = False
 
 

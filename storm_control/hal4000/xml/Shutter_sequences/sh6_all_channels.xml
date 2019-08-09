@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Oversampling : Oversampling is only useful if you want to use shutter sequences that 
+    have fraction on/off values. For example you want to turn the laser on in the middle of
+     a frame, or maybe only have the laser on for the first 1/100th of a frame.
+	-->
+<!-- by_name : True means you can refer to channels by wavelength value instead of 
+    channel number.
+	-->
+<repeat>
+    <frames>5</frames>
+    <oversampling>1</oversampling>
+    <by_name>1</by_name>
+    <event>
+        <channel>647</channel>
+        <power>1.0</power>
+        <on>0</on>
+        <off>1</off>
+        <color>0,247,255</color>
+    </event>
+    <event>
+        <channel>561</channel>
+        <power>1.0</power>
+        <on>1</on>
+        <off>2</off>
+        <color>130,0,200</color>
+    </event>
+    <event>
+        <channel>488</channel>
+        <power>1.0</power>
+        <on>2</on>
+        <off>3</off>
+        <color>130,0,200</color>
+    </event>
+    <event>
+        <channel>460</channel>
+        <power>1.0</power>
+        <on>3</on>
+        <off>4</off>
+        <color>130,0,200</color>
+    </event>
+</repeat>
+
