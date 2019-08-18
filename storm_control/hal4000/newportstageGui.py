@@ -28,7 +28,7 @@ import storm_control.sc_library.hdebug as hdebug
 import qtdesigner.storm3_misc_ui as miscControlsUi
 
 # SMC100 motor (for EPI/TIRF)
-import storm_control.sc_hardware.newport.smc100 as SMC100
+import storm_control.sc_hardware.newport.SMC100 as SMC100
 
 #
 # Misc Control Dialog Box
